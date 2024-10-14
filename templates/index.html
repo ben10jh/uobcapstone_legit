@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <title>UOB - Fraud Detection</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F4F4F4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-contact {
+            background-color: #004080; /* Darker blue for contact us pane */
+            padding: 10px;
+            width: 100%;
+        }
+
+        .navbar-logos {
+            background-color: #FFFFFF; /* White for logos pane */
+            padding: 10px;
+            width: 100%;
+        }
+
+        .contact-us {
+            margin-right: 20px;
+            color: white;
+        }
+
+        .navbar-brand img, .navbar-logo-right img {
+            height: 40px; /* Ensure both logos are the same height */
+        }
+
+        h1 {
+            color: #0057A7;
+            font-size: 1.5rem;
+        }
+
+        .btn-custom {
+            background-color: #0057A7;
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #D01C1F;
+            color: white;
+        }
+
+        .container {
+            background-color: #FFFFFF; /* Set the container background to white */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #0057A7;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-contact">
+        <a class="contact-us" href="https://wa.me/6585883926">Contact Us</a>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-logos">
+        <div class="navbar-left">
+            <a class="navbar-brand" href="https://www.uobgroup.com/uobgroup/default.page">
+                <img src="/static/U11.SI_BIG.png" alt="UOB Logo">
+            </a>
+        </div>
+        <a class="navbar-logo-right" href="https://www.uobgroup.com">
+            <img src="/static/right-by-you.png" alt="Right By You">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6 center-content">
+                <h1>Bulk Transactions</h1>
+                <form action="/uploader" method="post" enctype="multipart/form-data" class="mt-4">
+                    <div class="form-group">
+                        <input type="file" name="bulk_transactions" class="form-control-file" accept=".csv" multiple>
+                    </div>
+                    <button type="submit" class="btn btn-custom btn-sm mt-2"><i class="fas fa-upload"></i> Upload Bulk</button>
+                    <p class="mt-2" id="file-count"></p> <!-- Placeholder for number of files selected -->
+                    <div class="progress mt-3" style="height: 20px;">
+                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </form>
+
+                <h1>Single Transactions</h1>
+                <form action="/uploader_single" method="post" enctype="multipart/form-data" class="mt-4">
+                    <div class="form-group">
+                        <input type="file" name="single_transactions" class="form-control-file" accept=".csv">
+                    </div>
+                    <button type="submit" class="btn btn-custom btn-sm mt-2"><i class="fas fa-upload"></i> Upload Single</button>
+                    <div class="progress mt-3" style="height: 20px;">
+                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Update file count for bulk transactions
+        document.querySelector('input[name="bulk_transactions"]').addEventListener('change', function(event) {
+            let fileList = event.target.files;
+            let fileCount = document.getElementById('file-count');
+            if (fileList.length > 0) {
+                fileCount.textContent = fileList.length + " files selected for upload.";
+            } else {
+                fileCount.textContent = '';
+            }
+        });
+
+        // Handle form submission and simulate progress bar for both forms
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                var inputFile = form.querySelector('input[type="file"]');
+                if (!inputFile.files.length) {
+                    alert('Please select a file before uploading.');
+                    event.preventDefault(); // Prevent form submission
+                    return;
+                }
+                var progressBar = form.querySelector('.progress-bar');
+                progressBar.style.width = '50%';
+                progressBar.setAttribute('aria-valuenow', '50');
+                // Simulate a delay for demo purposes
+                setTimeout(function() {
+                    progressBar.style.width = '100%';
+                    progressBar.setAttribute('aria-valuenow', '100');
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
