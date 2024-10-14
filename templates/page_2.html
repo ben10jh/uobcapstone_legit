@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <title>UOB - Upload Transactions</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F4F4F4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #FFFFFF; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin-top: 20px;
+        }
+        .btn-custom {
+            background-color: #0057A7;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #D01C1F;
+            color: white;
+        }
+        footer {
+            background-color: #0057A7;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+            width: 100%;
+        }
+        footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Upload Transactions</h1>
+        <form action="/upload_file" method="post" enctype="multipart/form-data" class="mt-4">
+            <h2>Bulk Transactions</h2>
+            <div class="form-group">
+                <input type="file" name="bulk_transactions" class="form-control-file" accept=".csv" multiple>
+            </div>
+            <button type="submit" class="btn btn-custom btn-sm mt-2"><i class="fas fa-upload"></i> Upload Bulk</button>
+        </form>
+
+        <form action="/upload_file" method="post" enctype="multipart/form-data" class="mt-4">
+            <h2>Single Transaction</h2>
+            <div class="form-group">
+                <input type="file" name="single_transactions" class="form-control-file" accept=".csv">
+            </div>
+            <button type="submit" class="btn btn-custom btn-sm mt-2"><i class="fas fa-upload"></i> Upload Single</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 UOB. All rights reserved.</p>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
