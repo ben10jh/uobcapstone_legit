@@ -1,4 +1,5 @@
 import pandas as pd
+import sys
 
 def filter_fraud_transactions(file_path):
     # Load the dataset
@@ -38,8 +39,8 @@ def filter_fraud_transactions(file_path):
     # Apply the filter to each group of 'step' and 'amount'
     matching_transactions_6 = transfer_cashout.groupby(['step', 'amount'], group_keys=False).apply(filter_matching_transactions)
 
-    # Optionally, save the filtered dataset to a new CSV
-    filtered_file_path = '/path/to/save/matching_transactions_6.csv'
+    # Save the filtered dataset to a new CSV
+    filtered_file_path = 'filtered_transactions.csv'
     matching_transactions_6.to_csv(filtered_file_path, index=False)
 
     # Return the path of the filtered file or the filtered dataframe
