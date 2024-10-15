@@ -8,8 +8,8 @@ app = Flask(__name__)
 # Load the random forest model
 loaded_rf = joblib.load("fraud_detection_random_forest_smote.joblib")
 
-@app.route('/')
-def index():
+@app.route('/single')
+def single():
     return render_template('single.html')
 
 @app.route('/process', methods=['POST'])
