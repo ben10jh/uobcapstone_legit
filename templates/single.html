@@ -1,101 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transaction Input Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F4F4F4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-contact {
+            background-color: #004080; /* Darker blue for contact us pane */
+            padding: 10px;
+            width: 100%;
+        }
+
+        .navbar-logos {
+            background-color: #FFFFFF; /* White for logos pane */
+            padding: 10px;
+            width: 100%;
+        }
+
+        .contact-us {
+            margin-right: 20px;
+            color: white;
+        }
+
+        .navbar-brand img, .navbar-logo-right img {
+            height: 40px;
+        }
+
+        .navbar-brand {
+            margin-right: auto;
+        }
+
+        h1 {
+            color: #0057A7;
+        }
+
+        .btn-custom {
+            background-color: #0057A7;
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #D01C1F;
+            color: white;
+        }
+
+        .container {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        hr {
+            margin: 20px 0;
+        }
+
+        .list-group-item {
+            background-color: #ffffff;
+        }
+    </style>
     <script>
-      function addTransaction() {
-        const container = document.getElementById("transaction-container");
-        const transactionForm = `
-                <div class="transaction-entry">
+        function addTransaction() {
+            const container = document.getElementById("transaction-container");
+            const transactionForm = `
+                <div class="transaction-entry mb-3">
                     <label for="transaction_type">Transaction Type:</label>
-                    <select name="transaction_type[]" required>
+                    <select name="transaction_type[]" class="form-control" required>
                         <option value="CASH_IN">CASH_IN</option>
                         <option value="CASH_OUT">CASH_OUT</option>
                         <option value="DEBIT">DEBIT</option>
                         <option value="PAYMENT">PAYMENT</option>
                         <option value="TRANSFER">TRANSFER</option>
-                    </select><br><br>
+                    </select>
 
-                    <label for="amount">Transaction Amount:</label>
-                    <input type="number" step="any" name="amount[]" required><br><br>
+                    <label for="amount" class="mt-2">Transaction Amount:</label>
+                    <input type="number" step="any" name="amount[]" class="form-control" required />
 
-                    <label for="nameOrig">Original Account Number:</label>
-                    <input type="text" name="nameOrig[]" required><br><br>
+                    <label for="nameOrig" class="mt-2">Original Account Number:</label>
+                    <input type="text" name="nameOrig[]" class="form-control" required />
 
-                    <label for="oldBalanceOrig">Old Balance of Original Account:</label>
-                    <input type="number" step="any" name="oldBalanceOrig[]" required><br><br>
+                    <label for="oldBalanceOrig" class="mt-2">Old Balance of Original Account:</label>
+                    <input type="number" step="any" name="oldBalanceOrig[]" class="form-control" required />
 
-                    <label for="newBalanceOrig">New Balance of Original Account:</label>
-                    <input type="number" step="any" name="newBalanceOrig[]" required><br><br>
+                    <label for="newBalanceOrig" class="mt-2">New Balance of Original Account:</label>
+                    <input type="number" step="any" name="newBalanceOrig[]" class="form-control" required />
 
-                    <label for="nameDest">Destination Account Number:</label>
-                    <input type="text" name="nameDest[]" required><br><br>
+                    <label for="nameDest" class="mt-2">Destination Account Number:</label>
+                    <input type="text" name="nameDest[]" class="form-control" required />
 
-                    <label for="oldBalanceDest">Old Balance of Destination Account:</label>
-                    <input type="number" step="any" name="oldBalanceDest[]" required><br><br>
+                    <label for="oldBalanceDest" class="mt-2">Old Balance of Destination Account:</label>
+                    <input type="number" step="any" name="oldBalanceDest[]" class="form-control" required />
 
-                    <label for="newBalanceDest">New Balance of Destination Account:</label>
-                    <input type="number" step="any" name="newBalanceDest[]" required><br><br>
-
+                    <label for="newBalanceDest" class="mt-2">New Balance of Destination Account:</label>
+                    <input type="number" step="any" name="newBalanceDest[]" class="form-control" required />
+                    
                     <hr>
                 </div>
             `;
-        container.insertAdjacentHTML("beforeend", transactionForm);
-      }
+            container.insertAdjacentHTML("beforeend", transactionForm);
+        }
     </script>
-  </head>
-  <body>
-    <h1>Transaction Input Form</h1>
-    <form action="/process" method="post">
-      <div id="transaction-container">
-        <div class="transaction-entry">
-          <label for="transaction_type">Transaction Type:</label>
-          <select name="transaction_type[]" required>
-            <option value="CASH_IN">CASH_IN</option>
-            <option value="CASH_OUT">CASH_OUT</option>
-            <option value="DEBIT">DEBIT</option>
-            <option value="PAYMENT">PAYMENT</option>
-            <option value="TRANSFER">TRANSFER</option></select
-          ><br /><br />
+</head>
+<body>
+    <nav class="navbar navbar-contact">
+        <a class="contact-us" href="https://wa.me/6585883926">Contact Us</a>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-logos">
+        <div class="navbar-left">
+            <a class="navbar-brand" href="https://www.uobgroup.com/uobgroup/default.page">
+                <img src="/static/U11.SI_BIG.png" alt="UOB Logo">
+            </a>
+        </div>
+        <a class="navbar-logo-right" href="https://www.uobgroup.com">
+            <img src="/static/right-by-you.png" alt="Right By You">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+    <div class="container mt-4">
+        <h1>Transaction Input Form</h1>
+        <form action="/process" method="post">
+            <div id="transaction-container">
+                <div class="transaction-entry mb-3">
+                    <label for="transaction_type">Transaction Type:</label>
+                    <select name="transaction_type[]" class="form-control" required>
+                        <option value="CASH_IN">CASH_IN</option>
+                        <option value="CASH_OUT">CASH_OUT</option>
+                        <option value="DEBIT">DEBIT</option>
+                        <option value="PAYMENT">PAYMENT</option>
+                        <option value="TRANSFER">TRANSFER</option>
+                    </select>
 
-          <label for="amount">Transaction Amount:</label>
-          <input
-            type="number"
-            step="any"
-            name="amount[]"
-            required
-          /><br /><br />
+                    <label for="amount" class="mt-2">Transaction Amount:</label>
+                    <input type="number" step="any" name="amount[]" class="form-control" required />
 
-          <label for="nameOrig">Original Account Number:</label>
-          <input type="text" name="nameOrig[]" required /><br /><br />
+                    <label for="nameOrig" class="mt-2">Original Account Number:</label>
+                    <input type="text" name="nameOrig[]" class="form-control" required />
 
-          <label for="oldBalanceOrig">Old Balance of Original Account:</label>
-          <input
-            type="number"
-            step="any"
-            name="oldBalanceOrig[]"
-            required
-          /><br /><br />
+                    <label for="oldBalanceOrig" class="mt-2">Old Balance of Original Account:</label>
+                    <input type="number" step="any" name="oldBalanceOrig[]" class="form-control" required />
 
-          <label for="newBalanceOrig">New Balance of Original Account:</label>
-          <input
-            type="number"
-            step="any"
-            name="newBalanceOrig[]"
-            required
-          /><br /><br />
+                    <label for="newBalanceOrig" class="mt-2">New Balance of Original Account:</label>
+                    <input type="number" step="any" name="newBalanceOrig[]" class="form-control" required />
 
-          <label for="nameDest">Destination Account Number:</label>
-          <input type="text" name="nameDest[]" required /><br /><br />
+                    <label for="nameDest" class="mt-2">Destination Account Number:</label>
+                    <input type="text" name="nameDest[]" class="form-control" required />
 
-          <label for="oldBalanceDest"
-            >Old Balance of Destination Account:</label
-          >
-          <input
-            type="number"
-            step="any"
-            name="oldBalanceDest[]"
-            required
-          /><br /><br />
+                    <label for="oldBalanceDest" class="mt-2">Old Balance of Destination Account:</label>
+                    <input type="number" step="any" name="oldBalanceDest[]" class="form-control" required />
+
+                    <label for="newBalanceDest" class="mt-2">New Balance of Destination Account:</label>
+                    <input type="number" step="any" name="newBalanceDest[]" class="form-control" required />
+                    
+                    <hr />
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-custom btn-sm mt-2" onclick="addTransaction()">
+                <i class="fas fa-plus"></i> Add Another Transaction
+            </button>
+            <br /><br />
+            <button type="submit" class="btn btn-custom btn-sm mt-2">Submit Transactions</button>
+        </form>
+
+        <!-- This section will be populated dynamically when high-risk transactions are detected -->
+        <div id="result" class="mt-4">
+            {% if high_risk_accounts %}
+            <h2>High-risk transactions detected:</h2>
+            <ul class="list-group">
+                {% for orig, dest in high_risk_accounts %}
+                <li class="list-group-item">Orig: {{ orig }}, Dest: {{ dest }}</li>
+                {% endfor %}
+            </ul>
+            <a href="/download">
+                <button class="btn btn-custom btn-sm mt-2">Download High-Risk Transactions CSV</button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 UOB. All rights reserved.</p>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
