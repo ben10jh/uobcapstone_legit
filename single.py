@@ -10,7 +10,7 @@ loaded_rf = joblib.load("fraud_detection_random_forest_smote.joblib")
 
 @app.route('/')
 def index():
-    return render_template('Single_line_detection.html')
+    return render_template('single.html')
 
 @app.route('/process', methods=['POST'])
 def process_transaction():
@@ -73,7 +73,7 @@ def process_transaction():
         high_risk_accounts = list(zip(high_risk_transactions['nameOrig'], high_risk_transactions['nameDest']))
 
         # Render the template with the list of high-risk accounts
-        return render_template('Single_line_detection.html', high_risk_accounts=high_risk_accounts)
+        return render_template('single.html', high_risk_accounts=high_risk_accounts)
     else:
         return "<h2>All transactions processed successfully. No fraud detected.</h2>"
 
