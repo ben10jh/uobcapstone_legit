@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transaction Input Form</title>
+    <script>
+      function addTransaction() {
+        const container = document.getElementById("transaction-container");
+        const transactionForm = `
+                <div class="transaction-entry">
+                    <label for="transaction_type">Transaction Type:</label>
+                    <select name="transaction_type[]" required>
+                        <option value="CASH_IN">CASH_IN</option>
+                        <option value="CASH_OUT">CASH_OUT</option>
+                        <option value="DEBIT">DEBIT</option>
+                        <option value="PAYMENT">PAYMENT</option>
+                        <option value="TRANSFER">TRANSFER</option>
+                    </select><br><br>
+
+                    <label for="amount">Transaction Amount:</label>
+                    <input type="number" step="any" name="amount[]" required><br><br>
+
+                    <label for="nameOrig">Original Account Number:</label>
+                    <input type="text" name="nameOrig[]" required><br><br>
+
+                    <label for="oldBalanceOrig">Old Balance of Original Account:</label>
+                    <input type="number" step="any" name="oldBalanceOrig[]" required><br><br>
+
+                    <label for="newBalanceOrig">New Balance of Original Account:</label>
+                    <input type="number" step="any" name="newBalanceOrig[]" required><br><br>
+
+                    <label for="nameDest">Destination Account Number:</label>
+                    <input type="text" name="nameDest[]" required><br><br>
+
+                    <label for="oldBalanceDest">Old Balance of Destination Account:</label>
+                    <input type="number" step="any" name="oldBalanceDest[]" required><br><br>
+
+                    <label for="newBalanceDest">New Balance of Destination Account:</label>
+                    <input type="number" step="any" name="newBalanceDest[]" required><br><br>
+
+                    <hr>
+                </div>
+            `;
+        container.insertAdjacentHTML("beforeend", transactionForm);
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Transaction Input Form</h1>
+    <form action="/process" method="post">
+      <div id="transaction-container">
+        <div class="transaction-entry">
+          <label for="transaction_type">Transaction Type:</label>
+          <select name="transaction_type[]" required>
+            <option value="CASH_IN">CASH_IN</option>
+            <option value="CASH_OUT">CASH_OUT</option>
+            <option value="DEBIT">DEBIT</option>
+            <option value="PAYMENT">PAYMENT</option>
+            <option value="TRANSFER">TRANSFER</option></select
+          ><br /><br />
+
+          <label for="amount">Transaction Amount:</label>
+          <input
+            type="number"
+            step="any"
+            name="amount[]"
+            required
+          /><br /><br />
+
+          <label for="nameOrig">Original Account Number:</label>
+          <input type="text" name="nameOrig[]" required /><br /><br />
+
+          <label for="oldBalanceOrig">Old Balance of Original Account:</label>
+          <input
+            type="number"
+            step="any"
+            name="oldBalanceOrig[]"
+            required
+          /><br /><br />
+
+          <label for="newBalanceOrig">New Balance of Original Account:</label>
+          <input
+            type="number"
+            step="any"
+            name="newBalanceOrig[]"
+            required
+          /><br /><br />
+
+          <label for="nameDest">Destination Account Number:</label>
+          <input type="text" name="nameDest[]" required /><br /><br />
+
+          <label for="oldBalanceDest"
+            >Old Balance of Destination Account:</label
+          >
+          <input
+            type="number"
+            step="any"
+            name="oldBalanceDest[]"
+            required
+          /><br /><br />

@@ -29,6 +29,10 @@ def index():
 
     return render_template('index.html', results=results)  # Pass results to the template
 
+@app.route('/iframe', methods=['GET'])
+def iframe():
+    return render_template('iframe.html')  # Render the iframe.html template
+
 @app.route('/download_results', methods=['POST'])
 def download_results():
     results = request.form['results']  # Use request.form instead of request.json
