@@ -141,79 +141,17 @@
                </form>
 
                <form class="mt-4">
-                   <h2>Single Transactions</h2>
-                   <br><br>
-                   <a href="/single">
-                       <button type="button" class="btn btn-custom btn-sm mt-2">Go to Single transaction detection</button>
-                   </a>
-               </form>
-
-               {% if results %}
-               <div class="result-table">
-                   <h2>Results</h2>
-                   <table class="table table-bordered">
-                       <thead>
-                           <tr>
-                               {% for col in results[0].keys() %}
-                                   <th>{{ col }}</th>
-                               {% endfor %}
-                           </tr>
-                       </thead>
-                       <tbody>
-                           {% for row in results %}
-                               <tr>
-                                   {% for value in row.values() %}
-                                       <td>{{ value }}</td>
-                                   {% endfor %}
-                               </tr>
-                           {% endfor %}
-                       </tbody>
-                   </table>
-                   <form method="POST" action="/download_results">
-                       <input type="hidden" name="results" value="{{ results | tojson }}">
-                       <input type="submit" class="btn btn-custom" value="Download Results">
-                   </form>
-               </div>
-               {% endif %}
-           </div>
-       </div>
-   </div>
-   <footer>
-       <p>&copy; 2024 UOB. All rights reserved.</p>
-   </footer>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-   <script>
-       // Update file count for bulk transactions
-       document.querySelector('input[name="bulk_transactions"]').addEventListener('change', function(event) {
-           let fileList = event.target.files;
-           let fileCount = document.getElementById('file-count');
-           if (fileList.length > 0) {
-               fileCount.textContent = fileList.length + " files selected for upload.";
-           } else {
-               fileCount.textContent = '';
-           }
-       });
-
-       // Handle form submission and simulate progress bar for both forms
-       document.querySelectorAll('form').forEach(form => {
-           form.addEventListener('submit', function(event) {
-               var inputFile = form.querySelector('input[type="file"]');
-               if (!inputFile.files.length) {
-                   alert('Please select a file before uploading.');
-                   event.preventDefault(); // Prevent form submission
-                   return;
-               }
-               var progressBar = form.querySelector('.progress-bar');
-               progressBar.style.width = '50%';
-               progressBar.setAttribute('aria-valuenow', '50');
-               // Simulate a delay for demo purposes
-               setTimeout(function() {
-                   progressBar.style.width = '100%';
-                   progressBar.setAttribute('aria-valuenow', '100');
-               }, 1000);
-           });
-       });
-   </script>
+                <h2>Single Transactions</h2>
+                <br><br>
+                <a href="/single">
+                    <button type="button" class="btn btn-custom btn-sm mt-2">Go to Single transaction detection</button>
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+<footer>
+    <p>&copy; 2024 UOB. All rights reserved.</p>
+</footer>
 </body>
 </html>

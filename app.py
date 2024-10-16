@@ -1,40 +1,89 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, redirect, render_template, request, send_file, url_for
 import pandas as pd
+import os
 from io import BytesIO
 from bulk import filter_fraud_transactions  # Import your bulk processing function
 from single import *  # Import your single transaction processing function
 
 app = Flask(__name__)
 
+# Path to save uploaded and processed files
+UPLOAD_FOLDER = 'uploads'
+PROCESSED_FOLDER = 'processed'
+
+# Ensure directories exist
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(PROCESSED_FOLDER, exist_ok=True)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    results = []  # Initialize results
     if request.method == 'POST':
-        file1 = request.files.get('bulk_transactions')
-        #file2 = request.files.get('single_transactions')
+        if 'bulk_transactions' not in request.files:
+            return "No file part in the request."
 
-        try:
-            if file1 and file1.filename.endswith('.csv'):
-                df1 = pd.read_csv(file1)
-                results = filter_fraud_transactions(df1)  # Call your function here
-            else:
-                return "Invalid file format. Please upload valid CSV files.", 400
-        except Exception as e:
-            return f"An error occurred: {str(e)}", 500  # Return the error message for debugging
+        file = request.files['bulk_transactions']
 
-    print("Results:", results)  # Debug output
+        if file.filename == '':
+            return "No file selected."
 
-    return render_template('index.html', results=results)  # Pass results to the template
+        # Save the uploaded file to the upload folder
+        file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(file_path)
 
+        # Process the file and filter transactions
+        filtered_file_path = filter_fraud_transactions(file_path)
 
-@app.route('/download_results', methods=['POST'])
-def download_results():
-    results = request.form['results']  # Use request.form instead of request.json
-    df = pd.DataFrame(eval(results))  # Convert the string back to a list
-    csv_file = BytesIO()
-    df.to_csv(csv_file, index=False)
-    csv_file.seek(0)
-    return send_file(csv_file, attachment_filename="results.csv", as_attachment=True)
+        # Redirect to the download page with the file path
+        return redirect(url_for('download_file', filename=os.path.basename(filtered_file_path)))
+
+    return render_template('index.html')
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    # Create the full path to the file
+    file_path = os.path.join(PROCESSED_FOLDER, filename)
+    
+    # Send the file as a download
+    return send_file(file_path, as_attachment=True)
+
+def filter_fraud_transactions(file_path):
+    # Load the dataset
+    df = pd.read_csv(file_path)
+
+    # Filter transactions that are either TRANSFER or CASH_OUT
+    transfer_cashout = df[df['type'].isin(['TRANSFER', 'CASH_OUT'])]
+
+    # Sort by step and ensure we are looking for transactions where cash_out comes after transfer
+    transfer_cashout = transfer_cashout.sort_values(by=['step', 'amount', 'type'])
+
+    # Group by 'step' and 'amount' to find matching transactions
+    def filter_matching_transactions(group):
+        if 'TRANSFER' in group['type'].values and 'CASH_OUT' in group['type'].values:
+            transfer_idx = group.index[group['type'] == 'TRANSFER'][0]
+            cash_out_after_transfer = group[(group.index > transfer_idx) & (group['type'] == 'CASH_OUT')]
+
+            transfer_cash_out_filtered = pd.concat([group.loc[[transfer_idx]], cash_out_after_transfer])
+            amount_check = transfer_cash_out_filtered[
+                transfer_cash_out_filtered['amount'] <= transfer_cash_out_filtered['oldbalanceOrg']
+            ]
+
+            zero_balance_check = group[
+                (group['oldbalanceOrg'] == 0) & (group['newbalanceOrig'] == 0) |
+                (group['oldbalanceDest'] == 0) & (group['newbalanceDest'] == 0)
+            ]
+
+            return pd.concat([amount_check, zero_balance_check]).drop_duplicates()
+
+        return pd.DataFrame()
+
+    matching_transactions_6 = transfer_cashout.groupby(['step', 'amount'], group_keys=False).apply(filter_matching_transactions)
+
+    # Save the filtered dataset to a new CSV
+    filtered_file_path = os.path.join(PROCESSED_FOLDER, 'filtered_transactions.csv')
+    matching_transactions_6.to_csv(filtered_file_path, index=False)
+
+    # Return the path to the filtered file
+    return filtered_file_path
 
 # Load the random forest model
 loaded_rf = joblib.load("fraud_detection_random_forest_smote.joblib")
@@ -108,12 +157,12 @@ def process_transaction():
     else:
         return "<h2>All transactions processed successfully. No fraud detected.</h2>"
 
-@app.route('/download')
-def download_file():
+@app.route('/download_single')
+def download_file_single():
     # Check if the file exists before attempting to send it
-    file_path = 'high_risk_transactions.csv'
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=True)
+    file_path_1 = 'high_risk_transactions.csv'
+    if os.path.exists(file_path_1):
+        return send_file(file_path_1, as_attachment=True)
     else:
         return "<h2>Error: No file available for download.</h2>"
     
