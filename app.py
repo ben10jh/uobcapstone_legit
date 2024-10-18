@@ -1,11 +1,69 @@
-from flask import Flask, redirect, render_template, request, send_file, url_for
+from flask import Flask, flash, redirect, render_template, request, send_file, url_for
+import joblib
 import pandas as pd
 import os
-from io import BytesIO
-from bulk import filter_fraud_transactions  # Import your bulk processing function
-from single import *  # Import your single transaction processing function
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'  # Replace with a secure key
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            flash('Login Unsuccessful. Please check username and password', 'danger')
+
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+@app.route('/add_user', methods=['GET', 'POST'])
+@login_required
+def add_user():
+    if not current_user.is_admin:
+        return "<h2>You do not have permission to add users.</h2>", 403
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if User.query.filter_by(username=username).first():
+            flash('Username already exists', 'danger')
+        else:
+            new_user = User(username=username, password=generate_password_hash(password, method='sha256'))
+            db.session.add(new_user)
+            db.session.commit()
+            flash('User added successfully', 'success')
+            return redirect(url_for('index'))
+
+    return render_template('add_user.html')
+
 
 # Path to save uploaded and processed files
 UPLOAD_FOLDER = 'uploads'
@@ -16,6 +74,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     if request.method == 'POST':
         if 'bulk_transactions' not in request.files:
@@ -89,6 +148,7 @@ def filter_fraud_transactions(file_path):
 loaded_rf = joblib.load("fraud_detection_random_forest_smote.joblib")
 
 @app.route('/single')
+@login_required
 def single():
     return render_template('single.html')
 
@@ -169,6 +229,15 @@ def download_file_single():
 @app.route('/return')
 def return_to_main():
     return render_template('index.html')
+
+@app.cli.command('create-admin')
+def create_admin():
+    username = input('Enter admin username: ')
+    password = input('Enter admin password: ')
+    admin = User(username=username, password=generate_password_hash(password), is_admin=True)
+    db.session.add(admin)
+    db.session.commit()
+    print('Admin user created successfully!')
 
 if __name__ == '__main__':
     app.run(debug=True)

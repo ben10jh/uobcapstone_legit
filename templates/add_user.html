@@ -16,35 +16,53 @@
            flex-direction: column;
            min-height: 100vh;
        }
+
+       .navbar {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+       }
+
        .navbar-contact {
            background-color: #004080; /* Darker blue for contact us pane */
            padding: 10px;
            width: 100%;
        }
+
        .navbar-logos {
            background-color: #FFFFFF; /* White for logos pane */
            padding: 10px;
            width: 100%;
        }
+
        .contact-us {
            margin-right: 20px;
            color: white;
        }
+
        .navbar-brand img, .navbar-logo-right img {
            height: 40px;
+       }
+
+       .navbar-brand {
+           margin-right: auto;
        } 
+
        h1 {
            color: #0057A7;
            font-size: 1.5rem;
        }
+
        .btn-custom {
            background-color: #0057A7;
            color: white;
        }
+
        .btn-custom:hover {
            background-color: #D01C1F;
            color: white;
        }
+
        .container {
            background-color: #FFFFFF; /* Set the container background to white */
            padding: 20px;
@@ -52,6 +70,7 @@
            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
            flex: 1;
        }
+
        .center-content {
            display: flex;
            flex-direction: column;
@@ -59,6 +78,7 @@
            justify-content: center;
            text-align: center;
        }
+
        footer {
            background-color: #0057A7;
            color: white;
@@ -67,31 +87,38 @@
            margin-top: auto;
            width: 100%;
        }
+
+       footer a {
+           color: white;
+           margin: 0 10px;
+           text-decoration: none;
+       }
+
+       footer a:hover {
+           text-decoration: underline;
+       }
+
+       form {
+           background-color: #f9f9f9;
+           padding: 20px;
+           border-radius: 10px;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+           margin-bottom: 20px;
+       }
+
+       .result-table {
+           margin-top: 20px;
+       }
    </style>
 </head>
 <body>
-   <nav class="navbar navbar-contact">
-       <a class="contact-us" href="https://wa.me/6585883926">Contact Us</a>
-   </nav>
-   <nav class="navbar navbar-expand-lg navbar-light navbar-logos">
-       <div class="navbar-left">
-           <a class="navbar-brand" href="https://www.uobgroup.com/uobgroup/default.page">
-               <img src="/static/U11.SI_BIG.png" alt="UOB Logo">
-           </a>
-       </div>
-       <a class="navbar-logo-right" href="https://www.uobgroup.com">
-           <img src="/static/right-by-you.png" alt="Right By You">
-       </a>
-   </nav>
-   <iframe
-  src="https://jupyterlite.github.io/demo/repl/index.html?kernel=python&toolbar=1"
-  width="100%"
-  height="500px"
->
-</iframe>
-  
-   <footer>
-       <p>&copy; 2024 UOB. All rights reserved.</p>
-   </footer>
+    <form method="POST" action="{{ url_for('add_user') }}">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Add User</button>
+    </form>
+    <footer>
+        <p>&copy; 2024 UOB. All rights reserved.</p>
+    </footer>
 </body>
 </html>
