@@ -109,14 +109,72 @@
        .result-table {
            margin-top: 20px;
        }
+
+       .logout-form {
+           display: inline-block;
+           margin-left: 20px;
+           height:10px
+       }
+
+       .logout-btn {
+           background-color: transparent;
+           border: none;
+           color: #0057A7;
+           cursor: pointer;
+           font-weight: bold;
+           padding: 0;
+           height: 100%;
+
+           display: flex;
+            justify-content: center; /* Horizontal centering */
+            align-items: center;
+       }
+
+       .logout-btn:hover {
+           color: #D01C1F;
+       }
    </style>
 </head>
 <body>
-    <form method="POST" action="{{ url_for('add_user') }}">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Add User</button>
-    </form>
+    <nav class="navbar navbar-contact">
+        <a class="contact-us" href="https://wa.me/6585883926">Contact Us</a>
+        {% if current_user.is_authenticated %}
+            <span class="contact-us">Welcome, {{ current_user.username }}!</span>
+            <form class="logout-form" action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </form>
+        {% else %}
+            <a class="login-link" href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-logos">
+        <div class="navbar-left">
+            <a class="navbar-brand" href="https://www.uobgroup.com/uobgroup/default.page">
+                <img src="/static/U11.SI_BIG.png" alt="UOB Logo">
+            </a>
+        </div>
+        <a class="navbar-logo-right" href="https://www.uobgroup.com">
+            <img src="/static/right-by-you.png" alt="Right By You">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <form class="logout-form" action="{{ url_for('logout') }}" method="POST">
+            <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </form>
+    </nav>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 center-content">
+                <h1>Add New Users</h1>   
+                <form method="POST" action="{{ url_for('add_user') }}" class="mt-4">
+                    <div class="form-group"><input type="text" name="username" placeholder="Username" required></div>
+                    <div class="form-group"><input type="password" name="password" placeholder="Password" required></div>
+                    <button type="submit">Add user</button>
+                </form>
+            </div>
+        </div>
+    </div>
     <footer>
         <p>&copy; 2024 UOB. All rights reserved.</p>
     </footer>

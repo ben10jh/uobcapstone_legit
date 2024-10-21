@@ -21,6 +21,7 @@
            display: flex;
            justify-content: space-between;
            align-items: center;
+           height:60px
        }
 
        .navbar-contact {
@@ -109,11 +110,43 @@
        .result-table {
            margin-top: 20px;
        }
+
+       .logout-form {
+           display: inline-block;
+           margin-left: 20px;
+           height:10px
+       }
+
+       .logout-btn {
+           background-color: transparent;
+           border: none;
+           color: #0057A7;
+           cursor: pointer;
+           font-weight: bold;
+           padding: 0;
+           height: 100%;
+
+           display: flex;
+            justify-content: center; /* Horizontal centering */
+            align-items: center;
+       }
+
+       .logout-btn:hover {
+           color: #D01C1F;
+       }
    </style>
 </head>
 <body>
    <nav class="navbar navbar-contact">
        <a class="contact-us" href="https://wa.me/6585883926">Contact Us</a>
+       {% if current_user.is_authenticated %}
+            <span class="contact-us">Welcome, {{ current_user.username }}!</span>
+            <form class="logout-form" action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </form>
+        {% else %}
+            <a class="login-link" href="{{ url_for('login') }}">Login</a>
+        {% endif %}
    </nav>
    <nav class="navbar navbar-expand-lg navbar-light navbar-logos">
        <div class="navbar-left">

@@ -38,7 +38,7 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 @login_required
 def logout():
     logout_user()
@@ -56,7 +56,7 @@ def add_user():
         if User.query.filter_by(username=username).first():
             flash('Username already exists', 'danger')
         else:
-            new_user = User(username=username, password=generate_password_hash(password, method='sha256'))
+            new_user = User(username=username, password=generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
             flash('User added successfully', 'success')

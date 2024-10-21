@@ -1,2 +1,2 @@
 amount,nameOrig,oldbalanceOrg,newbalanceOrig,nameDest,oldbalanceDest,newbalanceDest,type_CASH_IN,type_CASH_OUT,type_DEBIT,type_PAYMENT,type_TRANSFER,prediction
-181.0,C19198158,181.0,0.0,C618518681,0.0,0.0,0,1,0,0,0,True
+181.0,c100,181.0,0.0,c200,0.0,0.0,0,1,0,0,0,True

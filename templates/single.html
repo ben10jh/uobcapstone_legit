@@ -17,66 +17,123 @@
             flex-direction: column;
             min-height: 100vh;
         }
-
+ 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height:60px
         }
-
+ 
         .navbar-contact {
             background-color: #004080; /* Darker blue for contact us pane */
             padding: 10px;
             width: 100%;
         }
-
+ 
         .navbar-logos {
             background-color: #FFFFFF; /* White for logos pane */
             padding: 10px;
             width: 100%;
         }
-
+ 
         .contact-us {
             margin-right: 20px;
             color: white;
         }
-
+ 
         .navbar-brand img, .navbar-logo-right img {
             height: 40px;
         }
-
+ 
         .navbar-brand {
             margin-right: auto;
-        }
-
+        } 
+ 
         h1 {
             color: #0057A7;
+            font-size: 1.5rem;
         }
-
+ 
         .btn-custom {
             background-color: #0057A7;
             color: white;
         }
-
+ 
         .btn-custom:hover {
             background-color: #D01C1F;
             color: white;
         }
-
+ 
         .container {
-            background-color: #FFFFFF;
+            background-color: #FFFFFF; /* Set the container background to white */
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             flex: 1;
         }
-
-        hr {
-            margin: 20px 0;
+ 
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
-
-        .list-group-item {
-            background-color: #ffffff;
+ 
+        footer {
+            background-color: #0057A7;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+            width: 100%;
+        }
+ 
+        footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+ 
+        footer a:hover {
+            text-decoration: underline;
+        }
+ 
+        form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+ 
+        .result-table {
+            margin-top: 20px;
+        }
+ 
+        .logout-form {
+            display: inline-block;
+            margin-left: 20px;
+            height:10px
+        }
+ 
+        .logout-btn {
+            background-color: transparent;
+            border: none;
+            color: #0057A7;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 0;
+            height: 100%;
+ 
+            display: flex;
+             justify-content: center; /* Horizontal centering */
+             align-items: center;
+        }
+ 
+        .logout-btn:hover {
+            color: #D01C1F;
         }
     </style>
     <script>
@@ -124,6 +181,14 @@
 <body>
     <nav class="navbar navbar-contact">
         <a class="contact-us" href="https://wa.me/6585883926">Contact Us</a>
+        {% if current_user.is_authenticated %}
+            <span class="contact-us">Welcome, {{ current_user.username }}!</span>
+            <form class="logout-form" action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </form>
+        {% else %}
+            <a class="login-link" href="{{ url_for('login') }}">Login</a>
+        {% endif %}
     </nav>
     <nav class="navbar navbar-expand-lg navbar-light navbar-logos">
         <div class="navbar-left">
