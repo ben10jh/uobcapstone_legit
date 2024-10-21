@@ -53,14 +53,16 @@ def add_user():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if User.query.filter_by(username=username).first():
-            flash('Username already exists', 'danger')
+        user_exists = User.query.filter_by(username=username).first()
+        if user_exists:
+            message = 'Username already exists'
         else:
             new_user = User(username=username, password=generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
-            flash('User added successfully', 'success')
-            return redirect(url_for('index'))
+            message = 'User added successfully'
+        
+        return render_template('add_user.html', message=message)
 
     return render_template('add_user.html')
 

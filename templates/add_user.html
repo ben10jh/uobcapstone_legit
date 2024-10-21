@@ -8,132 +8,133 @@
    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
    <title>UOB - Fraud Detection</title>
    <style>
-       body {
-           font-family: 'Roboto', sans-serif;
-           background-color: #F4F4F4;
-           margin: 0;
-           display: flex;
-           flex-direction: column;
-           min-height: 100vh;
-       }
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #F4F4F4;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
 
-       .navbar {
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-       }
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height:60px
+    }
 
-       .navbar-contact {
-           background-color: #004080; /* Darker blue for contact us pane */
-           padding: 10px;
-           width: 100%;
-       }
+    .navbar-contact {
+        background-color: #004080; /* Darker blue for contact us pane */
+        padding: 10px;
+        width: 100%;
+    }
 
-       .navbar-logos {
-           background-color: #FFFFFF; /* White for logos pane */
-           padding: 10px;
-           width: 100%;
-       }
+    .navbar-logos {
+        background-color: #FFFFFF; /* White for logos pane */
+        padding: 10px;
+        width: 100%;
+    }
 
-       .contact-us {
-           margin-right: 20px;
-           color: white;
-       }
+    .contact-us {
+        margin-right: 20px;
+        color: white;
+    }
 
-       .navbar-brand img, .navbar-logo-right img {
-           height: 40px;
-       }
+    .navbar-brand img, .navbar-logo-right img {
+        height: 40px;
+    }
 
-       .navbar-brand {
-           margin-right: auto;
-       } 
+    .navbar-brand {
+        margin-right: auto;
+    } 
 
-       h1 {
-           color: #0057A7;
-           font-size: 1.5rem;
-       }
+    h1 {
+        color: #0057A7;
+        font-size: 1.5rem;
+    }
 
-       .btn-custom {
-           background-color: #0057A7;
-           color: white;
-       }
+    .btn-custom {
+        background-color: #0057A7;
+        color: white;
+    }
 
-       .btn-custom:hover {
-           background-color: #D01C1F;
-           color: white;
-       }
+    .btn-custom:hover {
+        background-color: #D01C1F;
+        color: white;
+    }
 
-       .container {
-           background-color: #FFFFFF; /* Set the container background to white */
-           padding: 20px;
-           border-radius: 10px;
-           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-           flex: 1;
-       }
+    .container {
+        background-color: #FFFFFF; /* Set the container background to white */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        flex: 1;
+    }
 
-       .center-content {
-           display: flex;
-           flex-direction: column;
-           align-items: center;
-           justify-content: center;
-           text-align: center;
-       }
+    .center-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
 
-       footer {
-           background-color: #0057A7;
-           color: white;
-           text-align: center;
-           padding: 10px 0;
-           margin-top: auto;
-           width: 100%;
-       }
+    footer {
+        background-color: #0057A7;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        margin-top: auto;
+        width: 100%;
+    }
 
-       footer a {
-           color: white;
-           margin: 0 10px;
-           text-decoration: none;
-       }
+    footer a {
+        color: white;
+        margin: 0 10px;
+        text-decoration: none;
+    }
 
-       footer a:hover {
-           text-decoration: underline;
-       }
+    footer a:hover {
+        text-decoration: underline;
+    }
 
-       form {
-           background-color: #f9f9f9;
-           padding: 20px;
-           border-radius: 10px;
-           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-           margin-bottom: 20px;
-       }
+    form {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
 
-       .result-table {
-           margin-top: 20px;
-       }
+    .result-table {
+        margin-top: 20px;
+    }
 
-       .logout-form {
-           display: inline-block;
-           margin-left: 20px;
-           height:10px
-       }
+    .logout-form {
+        display: inline-block;
+        margin-left: 20px;
+        height:10px
+    }
 
-       .logout-btn {
-           background-color: transparent;
-           border: none;
-           color: #0057A7;
-           cursor: pointer;
-           font-weight: bold;
-           padding: 0;
-           height: 100%;
+    .logout-btn {
+        background-color: transparent;
+        border: none;
+        color: #0057A7;
+        cursor: pointer;
+        font-weight: bold;
+        padding: 0;
+        height: 100%;
 
-           display: flex;
-            justify-content: center; /* Horizontal centering */
-            align-items: center;
-       }
+        display: flex;
+         justify-content: center; /* Horizontal centering */
+         align-items: center;
+    }
 
-       .logout-btn:hover {
-           color: #D01C1F;
-       }
-   </style>
+    .logout-btn:hover {
+        color: #D01C1F;
+    }
+</style>
 </head>
 <body>
     <nav class="navbar navbar-contact">
@@ -170,8 +171,14 @@
                 <form method="POST" action="{{ url_for('add_user') }}" class="mt-4">
                     <div class="form-group"><input type="text" name="username" placeholder="Username" required></div>
                     <div class="form-group"><input type="password" name="password" placeholder="Password" required></div>
-                    <button type="submit">Add user</button>
+                    <button type="submit" class="btn btn-custom btn-sm mt-2">Add user</button>
+                    <a href ="/""><button type="button" class="btn btn-custom btn-sm mt-2" >Return to main page</button></a>
                 </form>
+                <div id="result" class="mt-4">
+                    {% if message %}
+                        <h1>{{ message }}</h1>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
